@@ -1,35 +1,92 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import data from './data.js';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Portfolio />
     </>
   )
 }
 
 export default App
+
+function Portfolio() {
+  const filters = ["All", "Websites", "Flayers", "Business Cards"];
+  const [activeFilter, setActifeFilter] = useState('All');
+  const [projects, setProjects] = useState(data);
+  const projectsAll = data;
+
+  const selectHandler = e => {
+    let filter = e.target.getAttribute(`data`);
+    setActifeFilter(filter);
+
+    if(filter == "All") {
+      setProjects(projectsAll);
+      return
+    }
+
+    setProjects(projectsAll.filter(item => item.category == filter));
+
+  }
+
+  return (
+    <>
+      <div className="portfolio">
+        <Toolbar 
+        filters={["All", "Websites", "Flayers", "Business Cards"]}
+        selected={activeFilter}
+        onSelectFilter={selectHandler}/>
+      </div>
+      <div className="projects">
+        <ProjectList projects={projects}/> 
+      </div>
+    </>
+  )
+}
+
+function Toolbar({filters, selected, onSelectFilter}) {
+  const data = filters;
+
+  let res = data.map(function(item) {
+    const disable = () => {
+      if(item == selected) {
+        return true
+      } else {
+        return false
+      }
+    }
+   return <Tool filter={item} handler={onSelectFilter} disable={disable()}/>
+  });
+
+      return (
+        <>
+        <div className="toolbar">
+          {res}
+        </div>
+      </>
+      )
+}
+
+function Tool({filter, handler, disable}) {
+  return (
+    <>
+      <button onClick={handler} disabled={disable} data={filter}>{filter}</button>
+    </>
+  )
+}
+
+
+function ProjectList({projects}) {
+  let res = projects.map(function(item) {
+   return <img src={item.img}/>
+  });
+
+      return (
+        <>
+          {res}
+      </>
+      )
+}
