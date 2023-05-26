@@ -34,18 +34,17 @@ function Portfolio() {
 
   return (
     <>
-    
+
       <div className="portfolio">
         <Toolbar 
         filters={["All", "Websites", "Flayers", "Business Cards"]}
         selected={activeFilter}
         onSelectFilter={selectHandler}/>
-      </div>
 
-      <div className="projects">
-        <ProjectList projects={projects}/> 
+        <div className="projects">    
+          <ProjectList projects={projects}/> 
+        </div>
       </div>
-
     </>
   )
 }
@@ -78,7 +77,7 @@ function Tool({filter, handler, disable}) {
 
 function ProjectList({projects}) {
   let res = projects.map(function(item) {
-   return <img src={item.img}/>
+   return <img className="projects__item" src={item.img}/>
   });
 
       return (
