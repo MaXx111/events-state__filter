@@ -34,31 +34,28 @@ function Portfolio() {
 
   return (
     <>
+    
       <div className="portfolio">
         <Toolbar 
         filters={["All", "Websites", "Flayers", "Business Cards"]}
         selected={activeFilter}
         onSelectFilter={selectHandler}/>
       </div>
+
       <div className="projects">
         <ProjectList projects={projects}/> 
       </div>
+
     </>
   )
 }
 
 function Toolbar({filters, selected, onSelectFilter}) {
   const data = filters;
-
   let res = data.map(function(item) {
-    const disable = () => {
-      if(item == selected) {
-        return true
-      } else {
-        return false
-      }
-    }
-   return <Tool filter={item} handler={onSelectFilter} disable={disable()}/>
+  const disable = item == selected;
+
+   return <Tool filter={item} handler={onSelectFilter} disable={disable}/>
   });
 
       return (
